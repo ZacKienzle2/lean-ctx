@@ -1104,17 +1104,7 @@ fn render_entropy(content: &str, ctx: RenderCtx<'_>, tuning: &ReadTuning<'_>) ->
         techniques_tag(&result.techniques),
         result.output
     );
-    let (delivered, sent) = finish_lossy_view(&output, content, original_tokens, file_path);
-    let compression_ratio = if original_tokens > 0 {
-        1.0 - (sent as f64 / original_tokens as f64)
-    } else {
-        0.0
-    };
-    crate::core::adaptive_thresholds::report_bandit_outcome_for_path(
-        file_path,
-        compression_ratio > 0.15,
-    );
-    (delivered, sent)
+    finish_lossy_view(&output, content, original_tokens, file_path)
 }
 
 /// Appends the savings line and recovery hint to a lossy view, and keeps the
